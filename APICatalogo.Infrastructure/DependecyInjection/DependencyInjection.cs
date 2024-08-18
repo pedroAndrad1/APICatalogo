@@ -11,8 +11,10 @@ namespace APICatalogo.Infrastructure.DependecyInjection
         {
             var mySqlConnection = configuration.GetConnectionString("Default");
             services.AddDbContext<AppDbContext>(options =>
-                options.UseMySql(mySqlConnection, ServerVersion.AutoDetect(mySqlConnection))
-            );
+                options.UseMySql(mySqlConnection,
+                ServerVersion.AutoDetect(mySqlConnection),
+                b => b.MigrationsAssembly("APICatalogo"))
+            ); ;
 
             return services;
            
