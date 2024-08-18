@@ -1,4 +1,4 @@
-﻿namespace ApiCatalogo.Domain.models
+﻿namespace APICatalogo.Domain.models
 {
     public record ProdutoModel
     {

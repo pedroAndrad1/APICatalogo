@@ -5,18 +5,20 @@ VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APICatalogo", "APICatalogo\APICatalogo.csproj", "{61903535-7857-4B5E-BAC5-1878340E5E9C}"
 	ProjectSection(ProjectDependencies) = postProject
+		{2AC5A97F-414F-432B-99C0-6D972D61402E} = {2AC5A97F-414F-432B-99C0-6D972D61402E}
 		{415A1C21-F2BB-4E0E-871E-2E8B04CF3365} = {415A1C21-F2BB-4E0E-871E-2E8B04CF3365}
 		{F473136C-C1ED-43A2-89CD-0CF6CBB86E42} = {F473136C-C1ED-43A2-89CD-0CF6CBB86E42}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiCatalogo.Domain", "ApiCatalogo.Domain\ApiCatalogo.Domain.csproj", "{2AC5A97F-414F-432B-99C0-6D972D61402E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APICatalogo.Domain", "ApiCatalogo.Domain\APICatalogo.Domain.csproj", "{2AC5A97F-414F-432B-99C0-6D972D61402E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APICatalogo.Infrastructure", "APICatalogo.Infrastructure\APICatalogo.Infrastructure.csproj", "{F473136C-C1ED-43A2-89CD-0CF6CBB86E42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APICatalogo.Infrastructure", "APICatalogo.Infrastructure\APICatalogo.Infrastructure.csproj", "{F473136C-C1ED-43A2-89CD-0CF6CBB86E42}"
 	ProjectSection(ProjectDependencies) = postProject
+		{2AC5A97F-414F-432B-99C0-6D972D61402E} = {2AC5A97F-414F-432B-99C0-6D972D61402E}
 		{415A1C21-F2BB-4E0E-871E-2E8B04CF3365} = {415A1C21-F2BB-4E0E-871E-2E8B04CF3365}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APICatalogo.Application", "APICatalogo.Application\APICatalogo.Application.csproj", "{415A1C21-F2BB-4E0E-871E-2E8B04CF3365}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APICatalogo.Application", "APICatalogo.Application\APICatalogo.Application.csproj", "{415A1C21-F2BB-4E0E-871E-2E8B04CF3365}"
 	ProjectSection(ProjectDependencies) = postProject
 		{2AC5A97F-414F-432B-99C0-6D972D61402E} = {2AC5A97F-414F-432B-99C0-6D972D61402E}
 	EndProjectSection
