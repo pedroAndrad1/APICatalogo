@@ -1,9 +1,10 @@
-﻿using APICatalogo.Infrastructure.Context;
+﻿using APICatalogo.Application.Queries.Produtos;
+using APICatalogo.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace APICatalogo.Infrastructure.DependecyInjection
+namespace APICatalogo.CrossCutting.DependecyInjection
 {
     public static class DependencyInjection
     {
@@ -15,6 +16,8 @@ namespace APICatalogo.Infrastructure.DependecyInjection
                 ServerVersion.AutoDetect(mySqlConnection),
                 b => b.MigrationsAssembly("APICatalogo"))
             ); ;
+
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof (GetProdutosQueryHandler)));
 
             return services;
            

@@ -8,8 +8,8 @@ namespace APICatalogo.Infrastructure.Context
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        DbSet<CategoriaModel> Categorias { get; set; }
-        DbSet<ProdutoModel> Produtos { get; set; }
+        public DbSet<CategoriaModel> Categorias { get; set; }
+        public DbSet<ProdutoModel> Produtos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
