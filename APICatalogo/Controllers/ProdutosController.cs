@@ -23,8 +23,8 @@ namespace APICatalogo.Controllers
         [HttpGet]
         public async Task<IActionResult> Get() 
         {
-            var getMembersQuery = new GetProdutosQuery();
-            var produtos = await _mediator.Send(getMembersQuery);
+            var getProdutosQuery = new GetProdutosQuery();
+            var produtos = await _mediator.Send(getProdutosQuery);
 
             if (produtos == null)
             {
@@ -33,6 +33,20 @@ namespace APICatalogo.Controllers
 
             return Ok(produtos);
 
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult> GetById(Guid id)
+        {
+            var getProdutoByIdQuery = new GetProdutoByIdQuery { Id = id };
+            var produto = await _mediator.Send(getProdutoByIdQuery);
+
+            if (produto == null)
+            {
+                return NotFound("Produto não encontrado.");
+            }
+
+            return Ok(produto);
         }
     }
 }
