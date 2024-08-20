@@ -16,8 +16,4 @@
     <ProjectReference Include="..\APICatalogo.Infrastructure\APICatalogo.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Commands\" />
-  </ItemGroup>
-
 </Project>

@@ -6,11 +6,11 @@ namespace APICatalogo.Application.Queries.Produtos
 {
     public class GetProdutosQuery : IRequest<IEnumerable<ProdutoModel>>
     {
-        public class GetProdutosQueryHandler : IRequestHandler<GetProdutosQuery, IEnumerable<ProdutoModel>>
+        public class GetProdutoQueryHandler : IRequestHandler<GetProdutosQuery, IEnumerable<ProdutoModel>>
         {
             private readonly AppDbContext _context;
 
-            public GetProdutosQueryHandler(AppDbContext context)
+            public GetProdutoQueryHandler(AppDbContext context)
             {
                 _context = context;
             }

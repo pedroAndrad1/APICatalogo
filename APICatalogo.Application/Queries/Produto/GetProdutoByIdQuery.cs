@@ -8,11 +8,11 @@ namespace APICatalogo.Application.Queries.Produtos
     {
         public Guid Id { get; init; }
 
-        public class GetProdutosByIdQueryHandler : IRequestHandler<GetProdutoByIdQuery, ProdutoModel>
+        public class GetProdutoByIdQueryHandler : IRequestHandler<GetProdutoByIdQuery, ProdutoModel>
         {
             private readonly AppDbContext _context;
 
-            public GetProdutosByIdQueryHandler(AppDbContext context)
+            public GetProdutoByIdQueryHandler(AppDbContext context)
             {
                 _context = context;
             }

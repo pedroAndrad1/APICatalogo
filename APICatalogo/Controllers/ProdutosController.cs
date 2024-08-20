@@ -1,4 +1,6 @@
-﻿using APICatalogo.Application.Queries.Produtos;
+﻿using APICatalogo.Application.Commands.Produto;
+using APICatalogo.Application.Queries.Produtos;
+using APICatalogo.Domain.models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,7 +32,6 @@ namespace APICatalogo.Controllers
             return Ok(produtos);
 
         }
-
         [HttpGet("{id}")]
         public async Task<ActionResult> GetById(Guid id)
         {
@@ -44,5 +45,27 @@ namespace APICatalogo.Controllers
 
             return Ok(produto);
         }
+        [HttpPost]
+        public async Task<ActionResult> Add(AddProdutoCommand command)
+        {
+            var addedProduto = await _mediator.Send(command);
+
+            return CreatedAtAction(nameof(GetById), new { id = addedProduto.Id }, addedProduto);
+        }
+        [HttpPut]
+        public async Task<ActionResult> Update(UpdateProdutoCommand command)
+        {
+            var updatedProduto = await _mediator.Send(command);
+
+            return updatedProduto != null ? Ok(updatedProduto) : NotFound("Produto não encontrado");
+        }
+        [HttpDelete]
+        public async Task<ActionResult> Delete(DeleteProdutoCommand command)
+        {
+            var deletedProduto = await _mediator.Send(command);
+            return deletedProduto != null ? Ok(deletedProduto) : NotFound("Produto não encontrado");
+
+        }
+
     }
 }

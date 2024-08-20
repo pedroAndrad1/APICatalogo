@@ -7,16 +7,16 @@ namespace APICatalogo.Domain.models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public Guid Id { get; init; }
+        public Guid Id { get; set; }
         [Required]
         [StringLength(80)]
-        public string Nome { get; init; } = string.Empty;
+        public string Nome { get; set; } = string.Empty;
         [Required]
         [StringLength(300)]
-        public string ImageUrl { get; init; } = string.Empty;
-        public ICollection<ProdutoModel>? Produtos { get; init; }
+        public string ImageUrl { get; set; } = string.Empty;
+        public ICollection<ProdutoModel>? Produtos { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public DateTime Created_at { get; init; }
+        public DateTime Created_at { get; set; }
     }
 }
