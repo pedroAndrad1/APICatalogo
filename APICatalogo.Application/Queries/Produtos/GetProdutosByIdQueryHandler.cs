@@ -1,24 +1,28 @@
 ﻿using APICatalogo.Domain.models;
-using APICatalogo.Domain.Queries.Produtos;
 using APICatalogo.Infrastructure.Context;
 using MediatR;
 
 namespace APICatalogo.Application.Queries.Produtos
 {
-    public class GetProdutosByIdQueryHandler : IRequestHandler<GetProdutoByIdQuery, ProdutoModel>
+    public class GetProdutoByIdQuery : IRequest<ProdutoModel>
     {
-        private readonly AppDbContext _context;
+        public Guid Id { get; init; }
 
-        public GetProdutosByIdQueryHandler(AppDbContext context)
+        public class GetProdutosByIdQueryHandler : IRequestHandler<GetProdutoByIdQuery, ProdutoModel>
         {
-            _context = context;
-        }
+            private readonly AppDbContext _context;
 
-        public async Task<ProdutoModel> Handle(GetProdutoByIdQuery request, CancellationToken cancellationToken)
-        {
-           var produto = _context.Produtos.Find(request.Id);
+            public GetProdutosByIdQueryHandler(AppDbContext context)
+            {
+                _context = context;
+            }
 
-           return produto;
+            public async Task<ProdutoModel> Handle(GetProdutoByIdQuery request, CancellationToken cancellationToken)
+            {
+                var produto = _context.Produtos.Find(request.Id);
+
+                return produto;
+            }
         }
     }
 }
