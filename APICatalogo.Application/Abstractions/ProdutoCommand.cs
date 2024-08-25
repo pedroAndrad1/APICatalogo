@@ -1,4 +1,4 @@
-﻿using APICatalogo.Domain.CustomAttributeValidation;
+﻿using APICatalogo.Application.CustomAttributeValidation;
 using APICatalogo.Domain.models;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
