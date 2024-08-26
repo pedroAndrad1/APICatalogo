@@ -1,18 +1,30 @@
 using APICatalogo.CrossCutting.DependecyInjection;
+using APICatalogo.Filters;
 using APICatalogo.Middlewares;
+using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers().AddJsonOptions(options =>
-    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
-);
+//builder.Services.AddControllers().AddJsonOptions(options =>
+//    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
+//);
+builder.Services
+   .AddControllersWithViews(options =>
+    {
+        options.Filters.Add<ApiLoggingFilter>();
+   })
+   .AddJsonOptions(options =>
+   options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
+   );
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 // Add Infrastructure
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddScoped<ApiLoggingFilter>();
 
 
 var app = builder.Build();
