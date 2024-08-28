@@ -21,6 +21,8 @@ namespace APICatalogo.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
+            throw new NotImplementedException();
+
             var getProdutosQuery = new GetProdutosQuery();
             var produtos = await _mediator.Send(getProdutosQuery);
 
