@@ -1,7 +1,6 @@
 using APICatalogo.CrossCutting.DependecyInjection;
 using APICatalogo.Filters;
 using APICatalogo.Middlewares;
-using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,7 +13,7 @@ builder.Services
    .AddControllersWithViews(options =>
     {
         options.Filters.Add<ApiLoggingFilter>();
-   })
+    })
    .AddJsonOptions(options =>
    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
    );
@@ -25,6 +24,15 @@ builder.Services.AddSwaggerGen();
 // Add Infrastructure
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddScoped<ApiLoggingFilter>();
+// Add Logger
+//builder.Logging.AddProvider(
+//    new CustomLoggerProvider(
+//        new CustomLoggerProviderConfiguration()
+//        {
+//            LogLevel = LogLevel.Information,
+//        }
+//    )
+// );
 
 
 var app = builder.Build();
