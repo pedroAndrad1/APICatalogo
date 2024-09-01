@@ -2,6 +2,8 @@
 using APICatalogo.Application.Abstractions;
 using APICatalogo.Domain.models;
 using APICatalogo.Infrastructure.Context;
+using APICatalogo.Infrastructure.Repositories;
+using APICatalogo.Infrastructure.Repositories.Abstractions;
 using MediatR;
 
 namespace APICatalogo.Application.Commands.Categoria
@@ -10,11 +12,11 @@ namespace APICatalogo.Application.Commands.Categoria
     {
         public class AddCategoriaCommandHandler : IRequestHandler<AddCategoriaCommand, CategoriaModel>
         {
-            private readonly AppDbContext _context;
+            private readonly IUnitOfWork _unitOfWork;
 
-            public AddCategoriaCommandHandler(AppDbContext context)
+            public AddCategoriaCommandHandler(UnitOfWork unitOfWork)
             {
-                _context = context;
+                _unitOfWork = unitOfWork;
             }
 
             public async Task<CategoriaModel> Handle(AddCategoriaCommand request, CancellationToken cancellationToken)
@@ -24,8 +26,9 @@ namespace APICatalogo.Application.Commands.Categoria
                     Nome = request.Nome,
                     ImageUrl = request.ImageUrl,
                 };
-                _context.Add(newCategoria);
-                await _context.SaveChangesAsync(cancellationToken);
+                _unitOfWork.CategoriaRepository.Create(newCategoria);
+
+                await _unitOfWork.CommitAsync(cancellationToken);
 
                 return newCategoria;
 

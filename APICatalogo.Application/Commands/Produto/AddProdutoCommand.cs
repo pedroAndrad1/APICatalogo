@@ -1,6 +1,7 @@
 ﻿using APICatalogo.Application.Abstractions;
 using APICatalogo.Domain.models;
 using APICatalogo.Infrastructure.Context;
+using APICatalogo.Infrastructure.Repositories.Abstractions;
 using MediatR;
 
 namespace APICatalogo.Application.Commands.Produto
@@ -9,11 +10,11 @@ namespace APICatalogo.Application.Commands.Produto
     {
         public class AddProdutoCommandHandler : IRequestHandler<AddProdutoCommand, ProdutoModel>
         {
-            private readonly AppDbContext _context;
+            private readonly IUnitOfWork _unitOfWork;
 
-            public AddProdutoCommandHandler(AppDbContext context)
+            public AddProdutoCommandHandler(IUnitOfWork unitOfWork)
             {
-                _context = context;
+                _unitOfWork = unitOfWork;
             }
 
             public async Task<ProdutoModel> Handle(AddProdutoCommand request, CancellationToken cancellationToken)
@@ -28,8 +29,8 @@ namespace APICatalogo.Application.Commands.Produto
                     ImageUrl = request.ImageUrl
                 };
 
-                _context.Add(newProduto);
-                await _context.SaveChangesAsync(cancellationToken);
+                _unitOfWork.ProdutoRepository.Create(newProduto);
+                await _unitOfWork.CommitAsync(cancellationToken);
 
                 return newProduto;
 

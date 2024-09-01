@@ -1,5 +1,7 @@
 using APICatalogo.CrossCutting.DependecyInjection;
 using APICatalogo.Filters;
+using APICatalogo.Infrastructure.Repositories;
+using APICatalogo.Infrastructure.Repositories.Abstractions;
 using APICatalogo.Middlewares;
 using System.Text.Json.Serialization;
 

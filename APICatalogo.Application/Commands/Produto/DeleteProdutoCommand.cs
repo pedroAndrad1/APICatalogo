@@ -1,5 +1,6 @@
 ﻿using APICatalogo.Domain.models;
 using APICatalogo.Infrastructure.Context;
+using APICatalogo.Infrastructure.Repositories.Abstractions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,21 +12,21 @@ namespace APICatalogo.Application.Commands.Produto
 
         public class DeleteProdutoCommandHanlder : IRequestHandler<DeleteProdutoCommand, ProdutoModel>
         {
-            private readonly AppDbContext _context;
+            private readonly IUnitOfWork _unitOfWork;
 
-            public DeleteProdutoCommandHanlder(AppDbContext context)
+            public DeleteProdutoCommandHanlder(IUnitOfWork unitOfWork)
             {
-                _context = context;
+                _unitOfWork = unitOfWork;
             }
 
             public async Task<ProdutoModel?> Handle(DeleteProdutoCommand request, CancellationToken cancellationToken)
             {
-                var produtoToBeDeleted = _context.Produtos.Find(request.Id);
+                var produtoToBeDeleted = _unitOfWork.ProdutoRepository.GetById(request.Id);
                 if(produtoToBeDeleted == null) return null;
                 
 
-                _context.Produtos.Remove(produtoToBeDeleted);
-                await _context.SaveChangesAsync(cancellationToken);
+                _unitOfWork.ProdutoRepository.Delete(produtoToBeDeleted);
+                await _unitOfWork.CommitAsync(cancellationToken);
 
                 return produtoToBeDeleted;
 

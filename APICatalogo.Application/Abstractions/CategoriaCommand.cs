@@ -1,6 +1,7 @@
 ﻿using APICatalogo.Domain.models;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace APICatalogo.Application.Abstractions
 {
@@ -13,6 +14,8 @@ namespace APICatalogo.Application.Abstractions
         [Required]
         [StringLength(300)]
         public string ImageUrl { get; set; } = string.Empty;
+
+        [JsonIgnore]
         public ICollection<ProdutoModel>? Produtos { get; set; }
     }
 }

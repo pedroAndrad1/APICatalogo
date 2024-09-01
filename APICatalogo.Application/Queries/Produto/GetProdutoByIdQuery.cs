@@ -1,5 +1,6 @@
 ﻿using APICatalogo.Domain.models;
 using APICatalogo.Infrastructure.Context;
+using APICatalogo.Infrastructure.Repositories.Abstractions;
 using MediatR;
 
 namespace APICatalogo.Application.Queries.Produtos
@@ -10,16 +11,16 @@ namespace APICatalogo.Application.Queries.Produtos
 
         public class GetProdutoByIdQueryHandler : IRequestHandler<GetProdutoByIdQuery, ProdutoModel>
         {
-            private readonly AppDbContext _context;
+            private readonly IUnitOfWork _unitOfWork;
 
-            public GetProdutoByIdQueryHandler(AppDbContext context)
+            public GetProdutoByIdQueryHandler(IUnitOfWork unitOfWork)
             {
-                _context = context;
+                _unitOfWork = unitOfWork;
             }
 
             public async Task<ProdutoModel> Handle(GetProdutoByIdQuery request, CancellationToken cancellationToken)
             {
-                var produto = _context.Produtos.Find(request.Id);
+                var produto = _unitOfWork.ProdutoRepository.GetById(request.Id);
 
                 return produto;
             }

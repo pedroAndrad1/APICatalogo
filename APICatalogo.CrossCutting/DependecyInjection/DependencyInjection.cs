@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using APICatalogo.Application.Queries.Produtos;
+using APICatalogo.Infrastructure.Repositories.Abstractions;
+using APICatalogo.Infrastructure.Repositories;
 
 namespace APICatalogo.CrossCutting.DependecyInjection
 {
@@ -16,10 +18,14 @@ namespace APICatalogo.CrossCutting.DependecyInjection
                 options.UseMySql(mySqlConnection,
                 ServerVersion.AutoDetect(mySqlConnection),
                 b => b.MigrationsAssembly("APICatalogo"))
-            ); ;
+            );
+            services.AddScoped<ICategoriaRepository, CategoriaRepository>();
+            services.AddScoped<IProdutoRepository, ProdutoRepository>();
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            // UNIT OF WORK
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             // MEDIATOR
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof (GetProdutosQuery)));
-
             return services;
            
         }

@@ -1,6 +1,7 @@
 ﻿using APICatalogo.Application.Abstractions;
 using APICatalogo.Domain.models;
 using APICatalogo.Infrastructure.Context;
+using APICatalogo.Infrastructure.Repositories.Abstractions;
 using MediatR;
 
 namespace APICatalogo.Application.Commands.Categoria
@@ -9,21 +10,22 @@ namespace APICatalogo.Application.Commands.Categoria
     {
         public class UpdateCategoriaCommandHanlder : IRequestHandler<UpdateCategoriaCommand, CategoriaModel>
         {
-            private readonly AppDbContext _context;
+            private readonly IUnitOfWork _unitOfWork;
 
-            public UpdateCategoriaCommandHanlder(AppDbContext context)
+            public UpdateCategoriaCommandHanlder(IUnitOfWork unitOfWork)
             {
-                _context = context;
+                _unitOfWork = unitOfWork;
             }
 
-            public async Task<CategoriaModel> Handle(UpdateCategoriaCommand request, CancellationToken cancellationToken)
+            public async Task<CategoriaModel?> Handle(UpdateCategoriaCommand request, CancellationToken cancellationToken)
             {
-                var categoriaToBeUpdated = _context.Categorias.Find(request.Id);
+                var categoriaToBeUpdated = _unitOfWork.CategoriaRepository.GetById((Guid)request.Id);
                 if (categoriaToBeUpdated == null) return null;
 
                 categoriaToBeUpdated.Nome = request.Nome;
                 categoriaToBeUpdated.ImageUrl = request.ImageUrl;
-                await _context.SaveChangesAsync(cancellationToken);
+                _unitOfWork.CategoriaRepository.Update(categoriaToBeUpdated);
+                await _unitOfWork.CommitAsync(cancellationToken);
 
                 return categoriaToBeUpdated;
             }

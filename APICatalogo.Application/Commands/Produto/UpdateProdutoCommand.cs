@@ -1,6 +1,7 @@
 ﻿using APICatalogo.Application.Abstractions;
 using APICatalogo.Domain.models;
 using APICatalogo.Infrastructure.Context;
+using APICatalogo.Infrastructure.Repositories.Abstractions;
 using MediatR;
 
 namespace APICatalogo.Application.Commands.Produto
@@ -9,16 +10,16 @@ namespace APICatalogo.Application.Commands.Produto
     {
         public class UpdateProdutoCommandHander : IRequestHandler<UpdateProdutoCommand, ProdutoModel>
         {
-            private readonly AppDbContext _context;
+            private readonly IUnitOfWork _unitOfWork;
 
-            public UpdateProdutoCommandHander(AppDbContext context)
+            public UpdateProdutoCommandHander(IUnitOfWork unitOfWork)
             {
-                _context = context;
+                _unitOfWork = unitOfWork;
             }
 
             public async Task<ProdutoModel?> Handle(UpdateProdutoCommand request, CancellationToken cancellationToken)
             {
-                var produtoToBeUpdated = _context.Produtos.Find(request.Id);
+                var produtoToBeUpdated = _unitOfWork.ProdutoRepository.GetById((Guid)request.Id);
                 if (produtoToBeUpdated == null) return null;
 
                 produtoToBeUpdated.Nome = request.Nome;
@@ -27,7 +28,8 @@ namespace APICatalogo.Application.Commands.Produto
                 produtoToBeUpdated.ImageUrl = request.ImageUrl;
                 produtoToBeUpdated.Estoque = request.Estoque;
                 produtoToBeUpdated.CategoriaId = request.CategoriaId;
-                await _context.SaveChangesAsync(cancellationToken);
+                _unitOfWork.ProdutoRepository.Update(produtoToBeUpdated);
+                await _unitOfWork.CommitAsync(cancellationToken);
 
                 return produtoToBeUpdated;
             }

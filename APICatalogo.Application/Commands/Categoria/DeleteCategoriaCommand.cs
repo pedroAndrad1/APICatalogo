@@ -1,5 +1,7 @@
 ﻿using APICatalogo.Domain.models;
 using APICatalogo.Infrastructure.Context;
+using APICatalogo.Infrastructure.Repositories;
+using APICatalogo.Infrastructure.Repositories.Abstractions;
 using MediatR;
 
 namespace APICatalogo.Application.Commands.Categoria
@@ -10,20 +12,20 @@ namespace APICatalogo.Application.Commands.Categoria
 
         public class DeleteCategoriaCommandHandler : IRequestHandler<DeleteCategoriaCommand, CategoriaModel>
         {
-            private readonly AppDbContext _context;
+            private readonly IUnitOfWork _unitOfWork;
 
-            public DeleteCategoriaCommandHandler(AppDbContext context)
+            public DeleteCategoriaCommandHandler(UnitOfWork unitOfWork)
             {
-                _context = context;
+                _unitOfWork = unitOfWork;
             }
 
             public async Task<CategoriaModel> Handle(DeleteCategoriaCommand request, CancellationToken cancellationToken)
             {
-                var categoriaToBeDeleted = _context.Categorias.Find(request.Id);
+                var categoriaToBeDeleted = _unitOfWork.CategoriaRepository.GetById(request.Id);
                 if (categoriaToBeDeleted == null) return null;
 
-                _context.Categorias.Remove(categoriaToBeDeleted);
-                await _context.SaveChangesAsync(cancellationToken);
+               _unitOfWork.CategoriaRepository.Delete(categoriaToBeDeleted);
+                await _unitOfWork.CommitAsync(cancellationToken);
 
                 return categoriaToBeDeleted;
             }

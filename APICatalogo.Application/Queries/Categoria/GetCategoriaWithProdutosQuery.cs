@@ -1,6 +1,7 @@
 ﻿
 using APICatalogo.Domain.models;
 using APICatalogo.Infrastructure.Context;
+using APICatalogo.Infrastructure.Repositories.Abstractions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,16 +11,16 @@ namespace APICatalogo.Application.Queries.Categoria
    {
         public class GetCategoriaWithProdutosQueryHandler : IRequestHandler<GetCategoriaWithProdutosQuery, IEnumerable<CategoriaModel>>
         {
-            private readonly AppDbContext _context;
+            private readonly IUnitOfWork _unitOfWork;
 
-            public GetCategoriaWithProdutosQueryHandler(AppDbContext context)
+            public GetCategoriaWithProdutosQueryHandler(IUnitOfWork unitOfWork)
             {
-                _context = context;
+                _unitOfWork = unitOfWork;
             }
 
             public async Task<IEnumerable<CategoriaModel>> Handle(GetCategoriaWithProdutosQuery request, CancellationToken cancellationToken)
             {
-                var categorias = _context.Categorias.Include(p => p.Produtos).ToList();
+                var categorias = _unitOfWork.CategoriaRepository.GetCategoriaWithProdutos();
                 return categorias;
             }
         }

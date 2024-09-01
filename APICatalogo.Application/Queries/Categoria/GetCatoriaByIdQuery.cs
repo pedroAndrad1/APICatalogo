@@ -1,6 +1,7 @@
 ﻿using APICatalogo.Application.Queries.Produtos;
 using APICatalogo.Domain.models;
 using APICatalogo.Infrastructure.Context;
+using APICatalogo.Infrastructure.Repositories.Abstractions;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -16,16 +17,16 @@ namespace APICatalogo.Application.Queries.Categoria
 
         public class GetCatoriaByIdQueryHandler : IRequestHandler<GetCatoriaByIdQuery, CategoriaModel>
         {
-            private readonly AppDbContext _context;
+            private readonly IUnitOfWork _unitOfWork;
 
-            public GetCatoriaByIdQueryHandler(AppDbContext context)
+            public GetCatoriaByIdQueryHandler(IUnitOfWork unitOfWork)
             {
-                _context = context;
+                _unitOfWork = unitOfWork;
             }
 
             public async Task<CategoriaModel> Handle(GetCatoriaByIdQuery request, CancellationToken cancellationToken)
             {
-                var categoria = _context.Categorias.Find(request.Id);
+                var categoria = _unitOfWork.CategoriaRepository.GetById(request.Id);
 
                 return categoria;
             }
