@@ -1,9 +1,7 @@
 ﻿
 using APICatalogo.Domain.models;
-using APICatalogo.Infrastructure.Context;
-using APICatalogo.Infrastructure.Repositories.Abstractions;
+using APICatalogo.Domain.Repositories;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace APICatalogo.Application.Queries.Categoria
 {
@@ -20,7 +18,7 @@ namespace APICatalogo.Application.Queries.Categoria
 
             public async Task<IEnumerable<CategoriaModel>> Handle(GetCategoriaWithProdutosQuery request, CancellationToken cancellationToken)
             {
-                var categorias = _unitOfWork.CategoriaRepository.GetCategoriaWithProdutos();
+                var categorias = _unitOfWork.CategoriaRepository.GetAll();
                 return categorias;
             }
         }

@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ApiCatalogo.Domain\APICatalogo.Domain.csproj" />
-    <ProjectReference Include="..\APICatalogo.Infrastructure\APICatalogo.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

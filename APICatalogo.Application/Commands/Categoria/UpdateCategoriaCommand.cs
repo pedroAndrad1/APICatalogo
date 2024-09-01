@@ -1,7 +1,6 @@
 ﻿using APICatalogo.Application.Abstractions;
 using APICatalogo.Domain.models;
-using APICatalogo.Infrastructure.Context;
-using APICatalogo.Infrastructure.Repositories.Abstractions;
+using APICatalogo.Domain.Repositories;
 using MediatR;
 
 namespace APICatalogo.Application.Commands.Categoria

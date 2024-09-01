@@ -1,5 +1,5 @@
 ﻿using APICatalogo.Infrastructure.Context;
-using APICatalogo.Infrastructure.Repositories.Abstractions;
+using APICatalogo.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 

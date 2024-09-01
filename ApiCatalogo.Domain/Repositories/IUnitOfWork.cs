@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace APICatalogo.Infrastructure.Repositories.Abstractions
+namespace APICatalogo.Domain.Repositories
 {
     public interface IUnitOfWork
     {

@@ -1,6 +1,6 @@
 ﻿using APICatalogo.Domain.models;
+using APICatalogo.Domain.Repositories;
 using APICatalogo.Infrastructure.Context;
-using APICatalogo.Infrastructure.Repositories.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

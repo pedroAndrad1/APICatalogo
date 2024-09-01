@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using APICatalogo.Application.Queries.Produtos;
-using APICatalogo.Infrastructure.Repositories.Abstractions;
+using APICatalogo.Domain.Repositories;
 using APICatalogo.Infrastructure.Repositories;
 
 namespace APICatalogo.CrossCutting.DependecyInjection
@@ -23,7 +23,7 @@ namespace APICatalogo.CrossCutting.DependecyInjection
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             // UNIT OF WORK
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
             // MEDIATOR
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof (GetProdutosQuery)));
             return services;

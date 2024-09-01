@@ -1,7 +1,6 @@
 ﻿using APICatalogo.Application.Queries.Produtos;
 using APICatalogo.Domain.models;
-using APICatalogo.Infrastructure.Context;
-using APICatalogo.Infrastructure.Repositories.Abstractions;
+using APICatalogo.Domain.Repositories;
 using MediatR;
 using System;
 using System.Collections.Generic;

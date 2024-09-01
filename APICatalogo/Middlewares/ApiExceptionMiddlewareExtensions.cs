@@ -1,6 +1,4 @@
-﻿
-
-using APICatalogo.Domain.Exceptions;
+﻿using APICatalogo.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using System.Net;
 

@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace APICatalogo.Domain.Exceptions
+namespace APICatalogo.Exceptions
 {
     public class ExceptionDetails
     {

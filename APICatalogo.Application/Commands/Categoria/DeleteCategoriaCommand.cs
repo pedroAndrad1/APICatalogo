@@ -1,7 +1,5 @@
 ﻿using APICatalogo.Domain.models;
-using APICatalogo.Infrastructure.Context;
-using APICatalogo.Infrastructure.Repositories;
-using APICatalogo.Infrastructure.Repositories.Abstractions;
+using APICatalogo.Domain.Repositories;
 using MediatR;
 
 namespace APICatalogo.Application.Commands.Categoria
@@ -14,7 +12,7 @@ namespace APICatalogo.Application.Commands.Categoria
         {
             private readonly IUnitOfWork _unitOfWork;
 
-            public DeleteCategoriaCommandHandler(UnitOfWork unitOfWork)
+            public DeleteCategoriaCommandHandler(IUnitOfWork unitOfWork)
             {
                 _unitOfWork = unitOfWork;
             }

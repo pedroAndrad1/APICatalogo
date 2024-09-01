@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\APICatalogo.Application\APICatalogo.Application.csproj" />
+    <ProjectReference Include="..\ApiCatalogo.Domain\APICatalogo.Domain.csproj" />
     <ProjectReference Include="..\APICatalogo.Infrastructure\APICatalogo.Infrastructure.csproj" />
   </ItemGroup>
 
