@@ -1,22 +1,26 @@
 ﻿using APICatalogo.Application.Abstractions;
+using APICatalogo.Application.DTOs;
 using APICatalogo.Domain.models;
 using APICatalogo.Domain.Repositories;
+using AutoMapper;
 using MediatR;
 
 namespace APICatalogo.Application.Commands.Produto
 {
     public class AddProdutoCommand : ProdutoCommand
     {
-        public class AddProdutoCommandHandler : IRequestHandler<AddProdutoCommand, ProdutoModel>
+        public class AddProdutoCommandHandler : IRequestHandler<AddProdutoCommand, ProdutoDTO>
         {
             private readonly IUnitOfWork _unitOfWork;
+            private readonly IMapper _mapper;
 
-            public AddProdutoCommandHandler(IUnitOfWork unitOfWork)
+            public AddProdutoCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
             {
                 _unitOfWork = unitOfWork;
+                _mapper = mapper;
             }
 
-            public async Task<ProdutoModel> Handle(AddProdutoCommand request, CancellationToken cancellationToken)
+            public async Task<ProdutoDTO> Handle(AddProdutoCommand request, CancellationToken cancellationToken)
             {
                 var newProduto = new ProdutoModel
                 {
@@ -31,7 +35,9 @@ namespace APICatalogo.Application.Commands.Produto
                 _unitOfWork.ProdutoRepository.Create(newProduto);
                 await _unitOfWork.CommitAsync(cancellationToken);
 
-                return newProduto;
+                var newProdutoDTO = _mapper.Map<ProdutoDTO>(newProduto);
+
+                return newProdutoDTO;
 
             }
         }

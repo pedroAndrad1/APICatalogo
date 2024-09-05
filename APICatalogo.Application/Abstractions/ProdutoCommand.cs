@@ -1,11 +1,12 @@
 ﻿using APICatalogo.Application.CustomAttributeValidation;
+using APICatalogo.Application.DTOs;
 using APICatalogo.Domain.models;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
 
 namespace APICatalogo.Application.Abstractions
 {
-    public class ProdutoCommand : IRequest<ProdutoModel>, IValidatableObject
+    public class ProdutoCommand : IRequest<ProdutoDTO>, IValidatableObject
     {
         public Guid? Id { get; init; }
         [Required]

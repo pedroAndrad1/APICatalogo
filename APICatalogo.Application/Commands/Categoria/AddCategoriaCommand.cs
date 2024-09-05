@@ -1,23 +1,27 @@
 ﻿
 using APICatalogo.Application.Abstractions;
+using APICatalogo.Application.DTOs;
 using APICatalogo.Domain.models;
 using APICatalogo.Domain.Repositories;
+using AutoMapper;
 using MediatR;
 
 namespace APICatalogo.Application.Commands.Categoria
 {
     public class AddCategoriaCommand : CategoriaCommand
     {
-        public class AddCategoriaCommandHandler : IRequestHandler<AddCategoriaCommand, CategoriaModel>
+        public class AddCategoriaCommandHandler : IRequestHandler<AddCategoriaCommand, CategoriaDTO>
         {
             private readonly IUnitOfWork _unitOfWork;
+            private readonly IMapper _mapper;
 
-            public AddCategoriaCommandHandler(IUnitOfWork unitOfWork)
+            public AddCategoriaCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
             {
                 _unitOfWork = unitOfWork;
+                _mapper = mapper;
             }
 
-            public async Task<CategoriaModel> Handle(AddCategoriaCommand request, CancellationToken cancellationToken)
+            public async Task<CategoriaDTO> Handle(AddCategoriaCommand request, CancellationToken cancellationToken)
             {
                 var newCategoria = new CategoriaModel
                 {
@@ -28,7 +32,9 @@ namespace APICatalogo.Application.Commands.Categoria
 
                 await _unitOfWork.CommitAsync(cancellationToken);
 
-                return newCategoria;
+                var newCategoriaDTO = _mapper.Map<CategoriaDTO>(newCategoria);
+
+                return newCategoriaDTO;
 
             }
         }

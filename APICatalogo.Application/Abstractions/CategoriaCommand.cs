@@ -1,11 +1,12 @@
-﻿using APICatalogo.Domain.models;
+﻿using APICatalogo.Application.DTOs;
+using APICatalogo.Domain.models;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace APICatalogo.Application.Abstractions
 {
-    public class CategoriaCommand : IRequest<CategoriaModel>
+    public class CategoriaCommand : IRequest<CategoriaDTO>
     {
         public Guid? Id { get; set; }
         [Required]

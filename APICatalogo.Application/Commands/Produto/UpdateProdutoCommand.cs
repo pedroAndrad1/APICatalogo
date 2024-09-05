@@ -1,22 +1,26 @@
 ﻿using APICatalogo.Application.Abstractions;
+using APICatalogo.Application.DTOs;
 using APICatalogo.Domain.models;
 using APICatalogo.Domain.Repositories;
+using AutoMapper;
 using MediatR;
 
 namespace APICatalogo.Application.Commands.Produto
 {
     public class UpdateProdutoCommand : ProdutoCommand
     {
-        public class UpdateProdutoCommandHander : IRequestHandler<UpdateProdutoCommand, ProdutoModel>
+        public class UpdateProdutoCommandHander : IRequestHandler<UpdateProdutoCommand, ProdutoDTO>
         {
             private readonly IUnitOfWork _unitOfWork;
+            private readonly IMapper _mapper;
 
-            public UpdateProdutoCommandHander(IUnitOfWork unitOfWork)
+            public UpdateProdutoCommandHander(IUnitOfWork unitOfWork, IMapper mapper)
             {
                 _unitOfWork = unitOfWork;
+                _mapper = mapper;
             }
 
-            public async Task<ProdutoModel?> Handle(UpdateProdutoCommand request, CancellationToken cancellationToken)
+            public async Task<ProdutoDTO?> Handle(UpdateProdutoCommand request, CancellationToken cancellationToken)
             {
                 var produtoToBeUpdated = _unitOfWork.ProdutoRepository.GetById((Guid)request.Id);
                 if (produtoToBeUpdated == null) return null;
@@ -30,7 +34,9 @@ namespace APICatalogo.Application.Commands.Produto
                 _unitOfWork.ProdutoRepository.Update(produtoToBeUpdated);
                 await _unitOfWork.CommitAsync(cancellationToken);
 
-                return produtoToBeUpdated;
+                var produtoToBeUpdatedDTO = _mapper.Map<ProdutoDTO>(produtoToBeUpdated);
+
+                return produtoToBeUpdatedDTO;
             }
         }
     }

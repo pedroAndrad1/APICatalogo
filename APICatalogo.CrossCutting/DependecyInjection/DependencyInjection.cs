@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using APICatalogo.Application.Queries.Produtos;
 using APICatalogo.Domain.Repositories;
 using APICatalogo.Infrastructure.Repositories;
+using APICatalogo.Application.Mapping;
 
 namespace APICatalogo.CrossCutting.DependecyInjection
 {
@@ -26,6 +27,8 @@ namespace APICatalogo.CrossCutting.DependecyInjection
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             // MEDIATOR
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof (GetProdutosQuery)));
+            // AUTO MAPPER
+            services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
             return services;
            
         }
