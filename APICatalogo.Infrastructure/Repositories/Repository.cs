@@ -2,6 +2,7 @@
 using APICatalogo.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using APICatalogo.Domain.Queries;
 
 namespace APICatalogo.Infrastructure.Repositories
 {
@@ -19,9 +20,12 @@ namespace APICatalogo.Infrastructure.Repositories
             return _context.Set<T>().Where(predicate);
         }
 
-        public IEnumerable<T> GetAll()
+        public IEnumerable<T> GetAll(IPagination pagination)
         {
-            return _context.Set<T>().ToList();
+            return _context.Set<T>()
+                .Skip((pagination.PageNumber - 1) + pagination.PageSize)
+                .Take(pagination.PageSize)
+                .ToList();
         }
 
         public T? GetById(Guid id)

@@ -1,6 +1,5 @@
 ﻿using APICatalogo.Application.Commands.Produto;
 using APICatalogo.Application.Queries.Produtos;
-using APICatalogo.Domain.models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,9 +18,8 @@ namespace APICatalogo.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery] GetProdutosQuery getProdutosQuery)
         {
-            var getProdutosQuery = new GetProdutosQuery();
             var produtos = await _mediator.Send(getProdutosQuery);
 
             if (produtos == null)

@@ -19,9 +19,8 @@ namespace APICatalogo.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery] GetCategoriaQuery getCategoriasQuery)
         {
-            var getCategoriasQuery = new GetCategoriaQuery();
             var categorias = await _mediator.Send(getCategoriasQuery);
 
             if (categorias == null)
@@ -33,9 +32,8 @@ namespace APICatalogo.Controllers
 
         }
         [HttpGet("produtos")]
-        public async Task<IActionResult> GetWithProdutos()
+        public async Task<IActionResult> GetWithProdutos([FromQuery] GetCategoriaWithProdutosQuery getCategoriasWithProdutosQuery)
         {
-            var getCategoriasWithProdutosQuery = new GetCategoriaWithProdutosQuery();
             var categorias = await _mediator.Send(getCategoriasWithProdutosQuery);
 
             if (categorias == null)

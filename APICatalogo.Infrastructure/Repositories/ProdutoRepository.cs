@@ -7,6 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using APICatalogo.Domain.Queries;
 
 namespace APICatalogo.Infrastructure.Repositories
 {
@@ -16,9 +17,9 @@ namespace APICatalogo.Infrastructure.Repositories
         {
         }
 
-        public IEnumerable<ProdutoModel> GetProdutosByCategoria(Guid categoriaId)
+        public IEnumerable<ProdutoModel> GetProdutosByCategoria(Guid categoriaId, IPagination pagination)
         {
-            return GetAll().Where(p => p.CategoriaId == categoriaId);
+            return GetAll(pagination).Where(p => p.CategoriaId == categoriaId);
         }
     }
 }

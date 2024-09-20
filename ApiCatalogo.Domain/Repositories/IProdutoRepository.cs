@@ -1,4 +1,5 @@
 ﻿using APICatalogo.Domain.models;
+using APICatalogo.Domain.Queries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace APICatalogo.Domain.Repositories
 {
     public interface IProdutoRepository : IRepository<ProdutoModel>
     {
-        IEnumerable<ProdutoModel> GetProdutosByCategoria(Guid categoriaId);
+        IEnumerable<ProdutoModel> GetProdutosByCategoria(Guid categoriaId, IPagination pagination);
     }
 }

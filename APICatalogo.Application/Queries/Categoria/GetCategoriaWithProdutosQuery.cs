@@ -1,4 +1,5 @@
 ﻿
+using APICatalogo.Application.Abstractions;
 using APICatalogo.Application.DTOs;
 using APICatalogo.Domain.models;
 using APICatalogo.Domain.Repositories;
@@ -7,7 +8,7 @@ using MediatR;
 
 namespace APICatalogo.Application.Queries.Categoria
 {
-   public class GetCategoriaWithProdutosQuery : IRequest<IEnumerable<CategoriaDTO>>
+   public class GetCategoriaWithProdutosQuery : Pagination, IRequest<IEnumerable<CategoriaDTO>>
    {
         public class GetCategoriaWithProdutosQueryHandler : IRequestHandler<GetCategoriaWithProdutosQuery, IEnumerable<CategoriaDTO>>
         {
@@ -22,7 +23,8 @@ namespace APICatalogo.Application.Queries.Categoria
 
             public async Task<IEnumerable<CategoriaDTO>> Handle(GetCategoriaWithProdutosQuery request, CancellationToken cancellationToken)
             {
-                var categorias = _unitOfWork.CategoriaRepository.GetAll();
+                var pagination = new Pagination { PageNumber = request.PageNumber, PageSize = request.PageSize };
+                var categorias = _unitOfWork.CategoriaRepository.GetAll(pagination);
                 var categoriasDTO = _mapper.Map<IEnumerable<CategoriaDTO>>(categorias);
                 return categoriasDTO;
             }
