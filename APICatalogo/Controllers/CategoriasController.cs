@@ -4,6 +4,8 @@ using APICatalogo.Application.Queries.Categoria;
 using APICatalogo.Application.Queries.Produtos;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace APICatalogo.Controllers
 {
@@ -22,26 +24,29 @@ namespace APICatalogo.Controllers
         public async Task<IActionResult> Get([FromQuery] GetCategoriaQuery getCategoriasQuery)
         {
             var categorias = await _mediator.Send(getCategoriasQuery);
+            Response.Headers.Append("x-pagination-metadata", JsonSerializer.Serialize(categorias.Metadata));
 
             if (categorias == null)
             {
                 return NotFound("Não há categorias registrados.");
             }
 
-            return Ok(categorias);
+
+            return Ok(categorias.QueryResults);
 
         }
         [HttpGet("produtos")]
         public async Task<IActionResult> GetWithProdutos([FromQuery] GetCategoriaWithProdutosQuery getCategoriasWithProdutosQuery)
         {
             var categorias = await _mediator.Send(getCategoriasWithProdutosQuery);
+            Response.Headers.Append("x-pagination-metadata", JsonSerializer.Serialize(categorias.Metadata));
 
             if (categorias == null)
             {
                 return NotFound("Não há categorias registrados.");
             }
 
-            return Ok(categorias);
+            return Ok(categorias.QueryResults);
 
         }
         [HttpGet("{id}")]

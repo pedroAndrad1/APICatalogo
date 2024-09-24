@@ -1,15 +1,15 @@
 ﻿using APICatalogo.Application.Abstractions;
 using APICatalogo.Application.DTOs;
-using APICatalogo.Domain.models;
+using APICatalogo.Domain.Queries;
 using APICatalogo.Domain.Repositories;
 using AutoMapper;
 using MediatR;
 
 namespace APICatalogo.Application.Queries.Produtos
 {
-    public class GetProdutosQuery : Pagination, IRequest<IEnumerable<ProdutoDTO>>
+    public class GetProdutosQuery : Pagination, IRequest<IQueryResponse<ProdutoDTO>>
     {
-        public class GetProdutoQueryHandler : IRequestHandler<GetProdutosQuery, IEnumerable<ProdutoDTO>>
+        public class GetProdutoQueryHandler : IRequestHandler<GetProdutosQuery, IQueryResponse<ProdutoDTO>>
         {
             private readonly IUnitOfWork _unitOfWork;
             private readonly IMapper _mapper;
@@ -20,13 +20,24 @@ namespace APICatalogo.Application.Queries.Produtos
                 _mapper = mapper;
             }
 
-            public async Task<IEnumerable<ProdutoDTO>> Handle(GetProdutosQuery request, CancellationToken cancellationToken)
+            public async Task<IQueryResponse<ProdutoDTO>> Handle(GetProdutosQuery request, CancellationToken cancellationToken)
             {
                 var pagination = new Pagination { PageNumber = request.PageNumber, PageSize = request.PageSize };
                 var produtos = _unitOfWork.ProdutoRepository.GetAll(pagination);
-                var produtosDTO = _mapper.Map<IEnumerable<ProdutoDTO>>(produtos);
+                var metadata = new QueryMetadata
+                {
+                    TotalCount = produtos.TotalCount,
+                    PageSize = produtos.PageSize,
+                    CurrentPage = produtos.CurrentPage,
+                    TotalPages = produtos.TotalPages,
+                    HasNext = produtos.HasNext,
+                    HasPrevious = produtos.HasPrevious,
 
-                return produtosDTO;
+                };
+                var produtosDTO = _mapper.Map<IEnumerable<ProdutoDTO>>(produtos);
+                var queryResponse = new QueryResponse<ProdutoDTO> { QueryResults = produtosDTO, Metadata = metadata };
+
+                return queryResponse;
             }
         }
     }

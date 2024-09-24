@@ -19,7 +19,7 @@ namespace APICatalogo.Infrastructure.Repositories
 
         public IEnumerable<ProdutoModel> GetProdutosByCategoria(Guid categoriaId, IPagination pagination)
         {
-            return GetAll(pagination).Where(p => p.CategoriaId == categoriaId);
+            return GetSet().Where(p => p.CategoriaId == categoriaId).ToList();
         }
     }
 }

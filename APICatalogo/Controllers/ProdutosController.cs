@@ -2,6 +2,7 @@
 using APICatalogo.Application.Queries.Produtos;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace APICatalogo.Controllers
 {
@@ -21,13 +22,14 @@ namespace APICatalogo.Controllers
         public async Task<IActionResult> Get([FromQuery] GetProdutosQuery getProdutosQuery)
         {
             var produtos = await _mediator.Send(getProdutosQuery);
+            Response.Headers.Append("x-pagination-metadata", JsonSerializer.Serialize(produtos.Metadata));
 
             if (produtos == null)
             {
                 return NotFound("Não há produtos registrados.");
             }
 
-            return Ok(produtos);
+            return Ok(produtos.QueryResults);
 
         }
         [HttpGet("{id}")]

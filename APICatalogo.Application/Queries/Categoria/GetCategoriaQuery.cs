@@ -1,15 +1,16 @@
 ﻿using APICatalogo.Application.Abstractions;
 using APICatalogo.Application.DTOs;
 using APICatalogo.Domain.models;
+using APICatalogo.Domain.Queries;
 using APICatalogo.Domain.Repositories;
 using AutoMapper;
 using MediatR;
 
 namespace APICatalogo.Application.Queries.Categoria
 {
-    public class GetCategoriaQuery : Pagination, IRequest<IEnumerable<CategoriaDTO>>
+    public class GetCategoriaQuery : Pagination, IRequest<IQueryResponse<CategoriaDTO>>
     {
-        public class GetCategoriaQueryHandler : IRequestHandler<GetCategoriaQuery, IEnumerable<CategoriaDTO>>
+        public class GetCategoriaQueryHandler : IRequestHandler<GetCategoriaQuery, IQueryResponse<CategoriaDTO>>
         {
             private readonly IUnitOfWork _unitOfWork;
             private readonly IMapper _mapper;
@@ -20,12 +21,24 @@ namespace APICatalogo.Application.Queries.Categoria
                 _mapper = mapper;
             }
 
-            public async Task<IEnumerable<CategoriaDTO>> Handle(GetCategoriaQuery request, CancellationToken cancellationToken)
+            public async Task<IQueryResponse<CategoriaDTO>> Handle(GetCategoriaQuery request, CancellationToken cancellationToken)
             {
                 var pagination = new Pagination { PageNumber = request.PageNumber, PageSize = request.PageSize };
                 var categorias = _unitOfWork.CategoriaRepository.GetAll(pagination);
+                var metadata = new QueryMetadata
+                {
+                    TotalCount = categorias.TotalCount,
+                    PageSize = categorias.PageSize,
+                    CurrentPage = categorias.CurrentPage,
+                    TotalPages = categorias.TotalPages,
+                    HasNext = categorias.HasNext,
+                    HasPrevious = categorias.HasPrevious,
+
+                };
                 var categoriasDTO = _mapper.Map<IEnumerable<CategoriaDTO>>(categorias);
-                return categoriasDTO;
+                var queryResponse = new QueryResponse<CategoriaDTO> { QueryResults = categoriasDTO, Metadata = metadata};
+
+                return queryResponse;
             }
         }
     }

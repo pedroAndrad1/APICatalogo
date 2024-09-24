@@ -5,7 +5,7 @@ namespace APICatalogo.Domain.Repositories
 {
     public interface IRepository<T> where T : class
     {
-        IEnumerable<T> GetAll(IPagination pagination);
+        IPagedList<T> GetAll(IPagination pagination);
         IQueryable<T> Get(Expression<Func<T, bool>> predicate);
         T? GetById(Guid id);
         T Create(T entity);
