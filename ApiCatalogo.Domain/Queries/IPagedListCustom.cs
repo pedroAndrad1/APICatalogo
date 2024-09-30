@@ -1,6 +1,6 @@
 ﻿namespace APICatalogo.Domain.Queries
 {
-    public interface IPagedList<T>
+    public interface IPagedListCustom<T>
     {
         public int CurrentPage { get; init; }
         public int TotalPages { get; }

@@ -2,7 +2,7 @@
 
 namespace APICatalogo.Infrastructure.PagedList
 {
-    public class PagedList<T> : List<T>, IPagedList<T> where T : class
+    public class PagedListCustom<T> : List<T>, IPagedListCustom<T> where T : class
     {
         public int CurrentPage { get; init; }
         public int TotalPages { get; }
@@ -12,7 +12,7 @@ namespace APICatalogo.Infrastructure.PagedList
         public bool HasPrevious => CurrentPage > 1;
         public bool HasNext => CurrentPage < TotalPages;
 
-        public PagedList(List<T> items, int currentPage, int pageSize, int totalCount)
+        public PagedListCustom(List<T> items, int currentPage, int pageSize, int totalCount)
         {
             CurrentPage = currentPage;
             PageSize = pageSize;
@@ -22,12 +22,12 @@ namespace APICatalogo.Infrastructure.PagedList
             AddRange(items);
         }
 
-        public static PagedList<T> ToPagedList(IQueryable<T> query, int pageNumber, int pageSize)
+        public static PagedListCustom<T> ToPagedList(IQueryable<T> query, int pageNumber, int pageSize)
         {
             var count = query.Count();
             var items = query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
 
-            return new PagedList<T>(items, pageNumber, pageSize, count);
+            return new PagedListCustom<T>(items, pageNumber, pageSize, count);
         }
 
     }

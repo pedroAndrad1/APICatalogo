@@ -3,7 +3,7 @@ using APICatalogo.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using APICatalogo.Domain.Queries;
-using APICatalogo.Infrastructure.PagedList;
+using X.PagedList;
 
 namespace APICatalogo.Infrastructure.Repositories
 {
@@ -21,10 +21,11 @@ namespace APICatalogo.Infrastructure.Repositories
             return _context.Set<T>().Where(predicate);
         }
 
-        public IPagedList<T> GetAll(IPagination pagination)
+        public async Task<IPagedList<T>> GetAllAsync(IPagination pagination)
         {
             var items = _context.Set<T>().AsQueryable();
-            var pagedItems = PagedList<T>.ToPagedList(items, pagination.PageNumber, pagination.PageSize);
+            var pagedItems = await items.ToPagedListAsync(pagination.PageNumber, pagination.PageSize);
+
 
             return pagedItems;
         

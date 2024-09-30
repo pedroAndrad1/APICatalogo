@@ -24,15 +24,15 @@ namespace APICatalogo.Application.Queries.Categoria
             public async Task<IQueryResponse<CategoriaDTO>> Handle(GetCategoriaQuery request, CancellationToken cancellationToken)
             {
                 var pagination = new Pagination { PageNumber = request.PageNumber, PageSize = request.PageSize };
-                var categorias = _unitOfWork.CategoriaRepository.GetAll(pagination);
+                var categorias = await _unitOfWork.CategoriaRepository.GetAllAsync(pagination);
                 var metadata = new QueryMetadata
                 {
-                    TotalCount = categorias.TotalCount,
+                    TotalCount = categorias.Count,
                     PageSize = categorias.PageSize,
-                    CurrentPage = categorias.CurrentPage,
-                    TotalPages = categorias.TotalPages,
-                    HasNext = categorias.HasNext,
-                    HasPrevious = categorias.HasPrevious,
+                    CurrentPage = categorias.PageCount,
+                    TotalPages = categorias.TotalItemCount,
+                    HasNext = categorias.HasNextPage,
+                    HasPrevious = categorias.HasPreviousPage,
 
                 };
                 var categoriasDTO = _mapper.Map<IEnumerable<CategoriaDTO>>(categorias);

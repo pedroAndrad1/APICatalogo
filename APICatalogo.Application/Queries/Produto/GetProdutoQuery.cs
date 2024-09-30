@@ -23,15 +23,15 @@ namespace APICatalogo.Application.Queries.Produtos
             public async Task<IQueryResponse<ProdutoDTO>> Handle(GetProdutosQuery request, CancellationToken cancellationToken)
             {
                 var pagination = new Pagination { PageNumber = request.PageNumber, PageSize = request.PageSize };
-                var produtos = _unitOfWork.ProdutoRepository.GetAll(pagination);
+                var produtos = await _unitOfWork.ProdutoRepository.GetAllAsync(pagination);
                 var metadata = new QueryMetadata
                 {
-                    TotalCount = produtos.TotalCount,
+                    TotalCount = produtos.Count,
                     PageSize = produtos.PageSize,
-                    CurrentPage = produtos.CurrentPage,
-                    TotalPages = produtos.TotalPages,
-                    HasNext = produtos.HasNext,
-                    HasPrevious = produtos.HasPrevious,
+                    CurrentPage = produtos.PageCount,
+                    TotalPages = produtos.TotalItemCount,
+                    HasNext = produtos.HasNextPage,
+                    HasPrevious = produtos.HasPreviousPage
 
                 };
                 var produtosDTO = _mapper.Map<IEnumerable<ProdutoDTO>>(produtos);
