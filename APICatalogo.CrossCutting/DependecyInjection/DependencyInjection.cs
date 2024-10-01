@@ -29,6 +29,10 @@ namespace APICatalogo.CrossCutting.DependecyInjection
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof (GetProdutosQuery)));
             // AUTO MAPPER
             services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
+            // JWT TOKEN
+            services.AddAuthorization();
+            services.AddAuthentication("Bearer").AddJwtBearer();
+
             return services;
            
         }
