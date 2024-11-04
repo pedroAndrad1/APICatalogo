@@ -1,10 +1,11 @@
 ﻿using APICatalogo.Domain.models;
+using APICatalogo.Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Metadata;
 
 namespace APICatalogo.Infrastructure.Context
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -13,9 +14,11 @@ namespace APICatalogo.Infrastructure.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-               Guid categoria0Id = Guid.NewGuid();
-               Guid categoria1Id = Guid.NewGuid();
-               Guid categoria2Id = Guid.NewGuid();
+            base.OnModelCreating(modelBuilder);
+
+            Guid categoria0Id = Guid.NewGuid();
+            Guid categoria1Id = Guid.NewGuid();
+            Guid categoria2Id = Guid.NewGuid();
 
             modelBuilder.Entity<CategoriaModel>().HasData(
                 new CategoriaModel { Id = categoria0Id, Nome = "Bebidas", ImageUrl = "bebidas.jpg", Created_at = DateTime.Now },

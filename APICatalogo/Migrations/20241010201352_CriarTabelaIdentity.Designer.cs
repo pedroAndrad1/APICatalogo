@@ -4,6 +4,7 @@ using APICatalogo.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APICatalogo.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241010201352_CriarTabelaIdentity")]
+    partial class CriarTabelaIdentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,22 +52,22 @@ namespace APICatalogo.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("fa0bc167-3305-4074-ba5f-76b76ffa5d9c"),
-                            Created_at = new DateTime(2024, 10, 10, 18, 36, 12, 16, DateTimeKind.Local).AddTicks(3207),
+                            Id = new Guid("d1987865-5cda-4c57-b2d2-9dd4edd82edd"),
+                            Created_at = new DateTime(2024, 10, 10, 17, 13, 51, 844, DateTimeKind.Local).AddTicks(2927),
                             ImageUrl = "bebidas.jpg",
                             Nome = "Bebidas"
                         },
                         new
                         {
-                            Id = new Guid("5c895696-b153-4dbc-bf73-5db7d4446934"),
-                            Created_at = new DateTime(2024, 10, 10, 18, 36, 12, 16, DateTimeKind.Local).AddTicks(3221),
+                            Id = new Guid("afa6a6ce-7412-4ba3-ad37-397725fb7a98"),
+                            Created_at = new DateTime(2024, 10, 10, 17, 13, 51, 844, DateTimeKind.Local).AddTicks(2942),
                             ImageUrl = "salgados.jpg",
                             Nome = "Salgados"
                         },
                         new
                         {
-                            Id = new Guid("5bdb4c1f-ac28-43af-8f86-ef774808c287"),
-                            Created_at = new DateTime(2024, 10, 10, 18, 36, 12, 16, DateTimeKind.Local).AddTicks(3223),
+                            Id = new Guid("ba10dd56-a519-4852-bd1d-3032d9da1dd3"),
+                            Created_at = new DateTime(2024, 10, 10, 17, 13, 51, 844, DateTimeKind.Local).AddTicks(2943),
                             ImageUrl = "doces.jpg",
                             Nome = "Doces"
                         });
@@ -112,9 +115,9 @@ namespace APICatalogo.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("8288516b-ef3b-4f23-8b94-147bcd2538c2"),
-                            CategoriaId = new Guid("fa0bc167-3305-4074-ba5f-76b76ffa5d9c"),
-                            Created_at = new DateTime(2024, 10, 10, 18, 36, 12, 16, DateTimeKind.Local).AddTicks(3362),
+                            Id = new Guid("c50c913a-4814-4883-abdf-76248165a575"),
+                            CategoriaId = new Guid("d1987865-5cda-4c57-b2d2-9dd4edd82edd"),
+                            Created_at = new DateTime(2024, 10, 10, 17, 13, 51, 844, DateTimeKind.Local).AddTicks(3094),
                             Descricao = "da fruta",
                             Estoque = 100f,
                             ImageUrl = "suco_de_caju.jpg",
@@ -123,9 +126,9 @@ namespace APICatalogo.Migrations
                         },
                         new
                         {
-                            Id = new Guid("029822f0-549c-4653-9c9b-92a18fa4743e"),
-                            CategoriaId = new Guid("5c895696-b153-4dbc-bf73-5db7d4446934"),
-                            Created_at = new DateTime(2024, 10, 10, 18, 36, 12, 16, DateTimeKind.Local).AddTicks(3364),
+                            Id = new Guid("3ea0c6ec-0a72-4507-be09-22a14e2579f3"),
+                            CategoriaId = new Guid("afa6a6ce-7412-4ba3-ad37-397725fb7a98"),
+                            Created_at = new DateTime(2024, 10, 10, 17, 13, 51, 844, DateTimeKind.Local).AddTicks(3096),
                             Descricao = "queijo e presunto",
                             Estoque = 100f,
                             ImageUrl = "joelho.jpg",
@@ -134,85 +137,15 @@ namespace APICatalogo.Migrations
                         },
                         new
                         {
-                            Id = new Guid("e7777aed-1cf4-406e-8586-8a4fcd2fd0d8"),
-                            CategoriaId = new Guid("5bdb4c1f-ac28-43af-8f86-ef774808c287"),
-                            Created_at = new DateTime(2024, 10, 10, 18, 36, 12, 16, DateTimeKind.Local).AddTicks(3366),
+                            Id = new Guid("f47fa3d8-474f-49cc-97cd-3eaa67aeee38"),
+                            CategoriaId = new Guid("ba10dd56-a519-4852-bd1d-3032d9da1dd3"),
+                            Created_at = new DateTime(2024, 10, 10, 17, 13, 51, 844, DateTimeKind.Local).AddTicks(3098),
                             Descricao = "de chocolate",
                             Estoque = 100f,
                             ImageUrl = "sorvete_de_chocolate.jpg",
                             Nome = "Sorvete",
                             PrecoEmCentavos = 1000
                         });
-                });
-
-            modelBuilder.Entity("APICatalogo.Infrastructure.Identity.ApplicationUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("longtext");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("RefreshToken")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("RefreshTokenExpiryTime")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("longtext");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex");
-
-                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -264,6 +197,70 @@ namespace APICatalogo.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex");
+
+                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -369,7 +366,7 @@ namespace APICatalogo.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("APICatalogo.Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -378,7 +375,7 @@ namespace APICatalogo.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("APICatalogo.Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -393,7 +390,7 @@ namespace APICatalogo.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("APICatalogo.Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -402,7 +399,7 @@ namespace APICatalogo.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("APICatalogo.Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

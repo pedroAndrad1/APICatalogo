@@ -1,11 +1,15 @@
 ﻿using APICatalogo.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using APICatalogo.Application.Queries.Produtos;
 using APICatalogo.Domain.Repositories;
 using APICatalogo.Infrastructure.Repositories;
 using APICatalogo.Application.Mapping;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace APICatalogo.CrossCutting.DependecyInjection
 {
@@ -20,6 +24,37 @@ namespace APICatalogo.CrossCutting.DependecyInjection
                 ServerVersion.AutoDetect(mySqlConnection),
                 b => b.MigrationsAssembly("APICatalogo"))
             );
+            // IDENTITY
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
+            // JWT TOKEN
+            var secretKey = configuration["JWT:SecretKey"] ?? throw new ArgumentException("Chave secrete JWT não encontrada!");
+            services
+                .AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(options =>
+                {
+                    options.SaveToken = true;
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ClockSkew = TimeSpan.Zero,
+                        ValidAudience = configuration["JWT:ValidAudience"],
+                        ValidIssuer = configuration["JWT:ValidIssuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+                    };
+                });
+            services.AddAuthorization();
+            services.AddAuthentication("Bearer").AddJwtBearer();
+            // REPOSITORIES
             services.AddScoped<ICategoriaRepository, CategoriaRepository>();
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
@@ -29,9 +64,6 @@ namespace APICatalogo.CrossCutting.DependecyInjection
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof (GetProdutosQuery)));
             // AUTO MAPPER
             services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
-            // JWT TOKEN
-            services.AddAuthorization();
-            services.AddAuthentication("Bearer").AddJwtBearer();
 
             return services;
            
