@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using APICatalogo.Domain.Services;
+using APICatalogo.Application.Services;
+using APICatalogo.Domain.Identity;
 
 namespace APICatalogo.CrossCutting.DependecyInjection
 {
@@ -25,7 +28,7 @@ namespace APICatalogo.CrossCutting.DependecyInjection
                 b => b.MigrationsAssembly("APICatalogo"))
             );
             // IDENTITY
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
             // JWT TOKEN
@@ -53,7 +56,8 @@ namespace APICatalogo.CrossCutting.DependecyInjection
                     };
                 });
             services.AddAuthorization();
-            services.AddAuthentication("Bearer").AddJwtBearer();
+            // services.AddAuthentication("Bearer").AddJwtBearer();
+            services.AddScoped<ITokenService, TokenService>();
             // REPOSITORIES
             services.AddScoped<ICategoriaRepository, CategoriaRepository>();
             services.AddScoped<IProdutoRepository, ProdutoRepository>();

@@ -1,5 +1,5 @@
-﻿using APICatalogo.Domain.models;
-using APICatalogo.Infrastructure.Identity;
+﻿using APICatalogo.Domain.Identity;
+using APICatalogo.Domain.models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
