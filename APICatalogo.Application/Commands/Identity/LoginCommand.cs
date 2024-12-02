@@ -1,7 +1,10 @@
 ﻿using APICatalogo.Application.DTOs;
+using APICatalogo.Application.Responses;
 using APICatalogo.Domain.Identity;
+using APICatalogo.Domain.Responses;
 using APICatalogo.Domain.Services;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using System.ComponentModel.DataAnnotations;
@@ -10,14 +13,14 @@ using System.Security.Claims;
 
 namespace APICatalogo.Application.Commands.Identity
 {
-    public class LoginCommand : IRequest<TokenDTO>
+    public class LoginCommand : IRequest<IActionResponse<TokenDTO>>
     {
         [Required(ErrorMessage = "Usuário obrigatório")]
         public string? Username {  get; set; }
         [Required(ErrorMessage = "Senha obrigatório")]
         public string? Password { get; set; }
 
-        public class LoginCommandHandler : IRequestHandler<LoginCommand, TokenDTO?>
+        public class LoginCommandHandler : IRequestHandler<LoginCommand, IActionResponse<TokenDTO>>
         {
 
             private readonly ITokenService _tokenService;
@@ -35,7 +38,7 @@ namespace APICatalogo.Application.Commands.Identity
                 _configuration = configuration;
             }
 
-            public async Task<TokenDTO?> Handle(LoginCommand request, CancellationToken cancellationToken)
+            public async Task<IActionResponse<TokenDTO>> Handle(LoginCommand request, CancellationToken cancellationToken)
             {
                 var user = await _userManager.FindByNameAsync(request.Username!);
                 if(user is not null && await _userManager.CheckPasswordAsync(user, request.Password!))
@@ -49,15 +52,22 @@ namespace APICatalogo.Application.Commands.Identity
                     user.RefreshTokenExpiryTime = DateTime.Now.AddMinutes(refreshValidityInMinutes);
                     await _userManager.UpdateAsync(user);
 
-                    return new TokenDTO
+                    return new ActionResponse<TokenDTO>()
                     {
-                        AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
-                        RefreshToken = refreshToken,
-                        Expiration = token.ValidTo.ToLongDateString(),
+                        StatusCode = StatusCodes.Status200OK,
+                        Data = new TokenDTO
+                        {
+                            AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
+                            RefreshToken = refreshToken,
+                            Expiration = token.ValidTo,
+                        }
                     };
                 }
 
-                return null;
+                return new ActionResponse<TokenDTO>()
+                {
+                    StatusCode = StatusCodes.Status401Unauthorized
+                }; ;
             }
 
             private async Task<List<Claim>> MountClaims(ApplicationUser user, LoginCommand request)

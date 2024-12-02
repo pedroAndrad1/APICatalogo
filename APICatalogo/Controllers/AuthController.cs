@@ -1,10 +1,13 @@
 ﻿using APICatalogo.Application.Commands.Identity;
 using APICatalogo.Application.Queries.Categoria;
+using APICatalogo.Application.Responses;
+using APICatalogo.Domain.Responses;
 using APICatalogo.Domain.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace APICatalogo.Controllers
 {
@@ -24,41 +27,24 @@ namespace APICatalogo.Controllers
         [Route("login")]
         public async Task<IActionResult> Login(LoginCommand command)
         {
-            var token = await _mediator.Send(command);
-
-            if (token == null)
-            {
-                return Unauthorized();
-            }
-
-            return Ok(token);
+            var actionResponse = await _mediator.Send(command);
+            return StatusCode(actionResponse.StatusCode, actionResponse.Data);
         }
 
         [HttpPost]
         [Route("resgister")]
         public async Task<IActionResult> Register(RegisterCommand command)
         {
-            var result = await _mediator.Send(command);
-            if(result == false)
-            {
-                return BadRequest("Já há um usuário com esse username");
-            }
-
-            return Ok("Usuário criado com sucesso");
+            var actionResponse = await _mediator.Send(command);
+            return StatusCode(actionResponse.StatusCode, actionResponse.Data);
         }
 
         [HttpPost]
         [Route("refresh-token")]
         public async Task<IActionResult> RefreshToken(RefreshTokenCommand command)
         {
-            var token = await _mediator.Send(command);
-
-            if (token == null)
-            {
-                return BadRequest();
-            }
-
-            return Ok(token);
+            var actionResponse = await _mediator.Send(command);
+            return StatusCode(actionResponse.StatusCode, actionResponse.Data);
         }
 
         [Authorize]
@@ -67,13 +53,8 @@ namespace APICatalogo.Controllers
         public async Task<IActionResult> Revoke(string username)
         {
             var command = new RevokeCommand() { Username = username };
-            var result = await _mediator.Send(command);
-            if( result == false)
-            {
-                return BadRequest();
-            }
-
-            return Ok();
+            var actionResponse = await _mediator.Send(command);
+            return StatusCode(actionResponse.StatusCode, actionResponse.Data);
         }
 
     }

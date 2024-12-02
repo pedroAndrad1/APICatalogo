@@ -23,8 +23,8 @@ namespace APICatalogo.Application.Services
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddMinutes(configuration.GetSection("JWT").GetValue<double>("TokenValidityInMinures")),
-                Audience = configuration.GetSection("JWT").GetValue<string>("ValidAudiences"),
+                Expires = DateTime.UtcNow.AddMinutes(configuration.GetSection("JWT").GetValue<double>("TokenValidityInMinutes")),
+                Audience = configuration.GetSection("JWT").GetValue<string>("ValidAudience"),
                 Issuer = configuration.GetSection("JWT").GetValue<string>("ValidIssuer"),
                 SigningCredentials = signingCredentials
             };

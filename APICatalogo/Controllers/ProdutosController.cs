@@ -1,6 +1,7 @@
 ﻿using APICatalogo.Application.Commands.Produto;
 using APICatalogo.Application.Queries.Produtos;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
@@ -18,6 +19,7 @@ namespace APICatalogo.Controllers
             _mediator = mediator;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] GetProdutosQuery getProdutosQuery)
         {
