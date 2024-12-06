@@ -55,7 +55,10 @@ namespace APICatalogo.CrossCutting.DependecyInjection
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
                     };
                 });
-            services.AddAuthorization();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
+            });
             // services.AddAuthentication("Bearer").AddJwtBearer();
             services.AddScoped<ITokenService, TokenService>();
             // REPOSITORIES
