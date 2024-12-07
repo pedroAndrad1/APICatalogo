@@ -58,6 +58,18 @@ namespace APICatalogo.CrossCutting.DependecyInjection
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
+                options.AddPolicy("SuperAdmin", policy => policy.RequireRole("Admin").RequireClaim("Id","SuperAdmin"));
+                options.AddPolicy("User", policy => policy.RequireRole("User"));
+
+                options.AddPolicy("Exclusive", policy =>
+                {
+                    policy.RequireAssertion(context =>
+                        context.User.HasClaim( claim =>
+                            claim.Type == "Id" && claim.Value == "SuperAdmin"
+                        ) ||
+                        context.User.IsInRole("SuperAdmin")
+                    );
+                });
             });
             // services.AddAuthentication("Bearer").AddJwtBearer();
             services.AddScoped<ITokenService, TokenService>();
@@ -71,6 +83,16 @@ namespace APICatalogo.CrossCutting.DependecyInjection
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof (GetProdutosQuery)));
             // AUTO MAPPER
             services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
+            // CORS
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy =>
+                    policy.WithOrigins("METODO_DOMINIO_E_PORTA_DO_CLIENTE_AQUI")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials()
+                );
+            });
 
             return services;
            
