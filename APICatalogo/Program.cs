@@ -77,6 +77,7 @@ else
 }
 
 app.UseHttpsRedirection();
+app.UseRateLimiter();
 app.UseCors();
 app.UseAuthorization();
 

@@ -13,6 +13,10 @@ using System.Text;
 using APICatalogo.Domain.Services;
 using APICatalogo.Application.Services;
 using APICatalogo.Domain.Identity;
+using APICatalogo.CrossCutting.Options;
+using Microsoft.AspNetCore.Builder;
+using System.Threading.RateLimiting;
+using Microsoft.AspNetCore.Http;
 
 namespace APICatalogo.CrossCutting.DependecyInjection
 {
@@ -92,6 +96,26 @@ namespace APICatalogo.CrossCutting.DependecyInjection
                         .AllowAnyHeader()
                         .AllowCredentials()
                 );
+            });
+            // Rate Limit
+            var rateLimitOptions = new RateLimitOptions();
+            configuration.GetSection(RateLimitOptions.RateLimitOptionsSection).Bind(rateLimitOptions);
+            services.AddRateLimiter(options =>
+            {
+                options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+                options.GlobalLimiter =
+                    PartitionedRateLimiter.Create<HttpContext, string>(
+                        httpContext => RateLimitPartition.GetFixedWindowLimiter(
+                            partitionKey: httpContext.User.Identity?.Name ?? httpContext.Request.Headers.Host.ToString(),
+                            factory: partition => new FixedWindowRateLimiterOptions
+                            {
+                                AutoReplenishment = rateLimitOptions.AutoReplenishment,
+                                PermitLimit = rateLimitOptions.PermitLimit,
+                                QueueLimit = rateLimitOptions.QueueLimit,
+                                Window = TimeSpan.FromSeconds(rateLimitOptions.Window)   
+                            }
+                        )
+                    );
             });
 
             return services;
