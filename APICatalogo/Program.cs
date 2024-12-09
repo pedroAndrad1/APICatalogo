@@ -5,6 +5,10 @@ using APICatalogo.Domain.Repositories;
 using APICatalogo.Middlewares;
 using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Models;
+using Asp.Versioning;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Reflection;
+using Asp.Versioning.ApiExplorer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +28,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Api Catalago", Version = "v1" });
+    c.SwaggerDoc("v2", new OpenApiInfo { Title = "Api Catalago", Version = "v2" });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
     {
         Name = "Authorization",
@@ -48,8 +53,6 @@ builder.Services.AddSwaggerGen(c =>
           }
         });
 });
-// Add Infrastructure
-builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddScoped<ApiLoggingFilter>();
 // Add Logger
 //builder.Logging.AddProvider(
@@ -61,22 +64,32 @@ builder.Services.AddScoped<ApiLoggingFilter>();
 //    )
 // );
 
+// Add Infrastructure
+builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    var apiVersionDescriptionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions)
+        {
+            options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json",
+                description.GroupName.ToUpperInvariant());
+        }
+    });
     app.ConfigureExceptionHandler();
 }
 else
 {
     app.UseExceptionHandler("/Error");
 }
-
 app.UseHttpsRedirection();
+
 app.UseRateLimiter();
 app.UseCors();
 app.UseAuthorization();

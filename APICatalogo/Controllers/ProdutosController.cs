@@ -1,5 +1,6 @@
 ﻿using APICatalogo.Application.Commands.Produto;
 using APICatalogo.Application.Queries.Produtos;
+using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,8 @@ using System.Text.Json;
 
 namespace APICatalogo.Controllers
 {
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class ProdutosController : ControllerBase
     {

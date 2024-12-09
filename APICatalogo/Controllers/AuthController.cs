@@ -1,17 +1,13 @@
 ﻿using APICatalogo.Application.Commands.Identity;
-using APICatalogo.Application.Queries.Categoria;
-using APICatalogo.Application.Responses;
-using APICatalogo.Domain.Responses;
-using APICatalogo.Domain.Services;
+using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace APICatalogo.Controllers
 {
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
     {

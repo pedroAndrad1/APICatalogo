@@ -1,15 +1,14 @@
 ﻿using APICatalogo.Application.Commands.Categoria;
-using APICatalogo.Application.Commands.Produto;
 using APICatalogo.Application.Queries.Categoria;
-using APICatalogo.Application.Queries.Produtos;
+using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace APICatalogo.Controllers
 {
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class CategoriasController : ControllerBase
     {
