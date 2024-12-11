@@ -44,14 +44,16 @@ builder.Services.AddSwaggerGen(c =>
           new OpenApiSecurityScheme
           {
             Reference = new OpenApiReference
-              {
+            {
                 Type = ReferenceType.SecurityScheme,
                 Id = "Bearer"
-              },
             },
+          },
             new List<string>()
-          }
-        });
+        }
+    });
+    var xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory,xmlFileName));
 });
 builder.Services.AddScoped<ApiLoggingFilter>();
 // Add Logger

@@ -3,12 +3,15 @@ using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace APICatalogo.Controllers
 {
+    [ApiConventionType(typeof(DefaultApiConventions))]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [Produces("application/json")]
     public class AuthController : ControllerBase
     {
 
@@ -42,10 +45,17 @@ namespace APICatalogo.Controllers
             var actionResponse = await _mediator.Send(command);
             return StatusCode(actionResponse.StatusCode, actionResponse.Data);
         }
-
+        /// <summary>
+        /// Anula o refresh token de um usuário
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         [Authorize(policy: "Admin")]
         [HttpPost]
         [Route("revoke/{username}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Revoke(string username)
         {
             var command = new RevokeCommand() { Username = username };
