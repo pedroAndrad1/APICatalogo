@@ -11,31 +11,23 @@ using Bogus;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Xunit.Abstractions;
+using APICatalogo.Tests.Application.TestConfig.Produto;
 
 
 namespace APICatalogo.Tests.Application.Queries.Produto
 {
-    public class GetProdutoQueryTests
+    public class GetProdutoQueryTests : IClassFixture<ProdutoTestConfig>
     {
         private readonly GetProdutosQuery.GetProdutoQueryHandler _handler;
         private readonly Faker _faker = new Faker("pt_BR");
         private readonly IUnitOfWork _unitOfWork;
         private readonly ITestOutputHelper _outputHelper;
 
-        public GetProdutoQueryTests(ITestOutputHelper outputHelper)
+        public GetProdutoQueryTests(ITestOutputHelper outputHelper, ProdutoTestConfig produtoTestConfig)
         {
-            var dbContextOptions = new DbContextOptionsBuilder<AppDbContext>();
-            dbContextOptions.UseInMemoryDatabase("APICatologoTests");
-            var dbContext = new AppDbContext(dbContextOptions.Options);
-            var unitOfWork = new UnitOfWork(dbContext);
-            _unitOfWork = unitOfWork;
-
-            var profile = new DomainToDTOMappingProfile();
-            var configuration = new MapperConfiguration(cfg => cfg.AddProfile(profile));
-            IMapper mapper = new Mapper(configuration);
-
-
-            _handler = new GetProdutosQuery.GetProdutoQueryHandler(unitOfWork, mapper);
+            _faker = produtoTestConfig._faker;
+            _unitOfWork = produtoTestConfig._unitOfWork;
+            _handler = new GetProdutosQuery.GetProdutoQueryHandler(produtoTestConfig._unitOfWork, produtoTestConfig._mapper);
             _outputHelper = outputHelper;
         }
 

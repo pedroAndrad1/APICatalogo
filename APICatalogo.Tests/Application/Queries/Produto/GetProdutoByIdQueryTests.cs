@@ -4,6 +4,7 @@ using APICatalogo.Domain.models;
 using APICatalogo.Domain.Repositories;
 using APICatalogo.Infrastructure.Context;
 using APICatalogo.Infrastructure.Repositories;
+using APICatalogo.Tests.Application.TestConfig.Produto;
 using AutoMapper;
 using Bogus;
 using FluentAssertions;
@@ -12,27 +13,18 @@ using Xunit.Abstractions;
 
 namespace APICatalogo.Tests.Application.Queries.Produto
 {
-    public class GetProdutoByIdQueryTests
+    public class GetProdutoByIdQueryTests : IClassFixture<ProdutoTestConfig>
     {
         private readonly GetProdutoByIdQuery.GetProdutoByIdQueryHandler _handler;
         private readonly Faker _faker = new Faker("pt_BR");
         private readonly IUnitOfWork _unitOfWork;
         private readonly ITestOutputHelper _outputHelper;
 
-        public GetProdutoByIdQueryTests(ITestOutputHelper outputHelper)
+        public GetProdutoByIdQueryTests(ProdutoTestConfig produtoTestConfig, ITestOutputHelper outputHelper)
         {
-            var dbContextOptions = new DbContextOptionsBuilder<AppDbContext>();
-            dbContextOptions.UseInMemoryDatabase("APICatologoTests");
-            var dbContext = new AppDbContext(dbContextOptions.Options);
-            var unitOfWork = new UnitOfWork(dbContext);
-            _unitOfWork = unitOfWork;
-
-            var profile = new DomainToDTOMappingProfile();
-            var configuration = new MapperConfiguration(cfg => cfg.AddProfile(profile));
-            IMapper mapper = new Mapper(configuration);
-
-
-            _handler = new GetProdutoByIdQuery.GetProdutoByIdQueryHandler(unitOfWork, mapper);
+            _handler = new GetProdutoByIdQuery.GetProdutoByIdQueryHandler(produtoTestConfig._unitOfWork, produtoTestConfig._mapper);
+            _faker = produtoTestConfig._faker;
+            _unitOfWork = produtoTestConfig._unitOfWork;
             _outputHelper = outputHelper;
         }
 

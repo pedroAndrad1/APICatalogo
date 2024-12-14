@@ -6,6 +6,7 @@ using APICatalogo.Application.Queries.Produtos;
 using APICatalogo.Domain.Repositories;
 using APICatalogo.Infrastructure.Context;
 using APICatalogo.Infrastructure.Repositories;
+using APICatalogo.Tests.Application.TestConfig.Produto;
 using AutoMapper;
 using Bogus;
 using FluentAssertions;
@@ -14,24 +15,16 @@ using Xunit.Abstractions;
 
 namespace APICatalogo.Tests.Application.Commands.Produto
 {
-    public class AddProdutoCommandTests
+    public class AddProdutoCommandTests : IClassFixture<ProdutoTestConfig>
     {
         private readonly AddProdutoCommand.AddProdutoCommandHandler _handler;
         private readonly Faker _faker = new Faker("pt_BR");
         private readonly ITestOutputHelper _outputHelper;
 
-        public AddProdutoCommandTests(ITestOutputHelper outputHelper)
+        public AddProdutoCommandTests(ITestOutputHelper outputHelper, ProdutoTestConfig produtoTestConfig)
         {
-            var dbContextOptions = new DbContextOptionsBuilder<AppDbContext>();
-            dbContextOptions.UseInMemoryDatabase("APICatologoTests");
-            var dbContext = new AppDbContext(dbContextOptions.Options);
-            var unitOfWork = new UnitOfWork(dbContext);
-
-            var profile = new DomainToDTOMappingProfile();
-            var configuration = new MapperConfiguration(cfg => cfg.AddProfile(profile));
-            IMapper mapper = new Mapper(configuration);
-
-            _handler = new AddProdutoCommand.AddProdutoCommandHandler(unitOfWork, mapper);
+            _faker = produtoTestConfig._faker;
+            _handler = new AddProdutoCommand.AddProdutoCommandHandler(produtoTestConfig._unitOfWork, produtoTestConfig._mapper);
             _outputHelper = outputHelper;
         }
 
