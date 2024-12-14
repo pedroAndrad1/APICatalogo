@@ -22,7 +22,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APICatalogo.Application", "
 		{2AC5A97F-414F-432B-99C0-6D972D61402E} = {2AC5A97F-414F-432B-99C0-6D972D61402E}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APICatalogo.CrossCutting", "APICatalogo.CrossCutting\APICatalogo.CrossCutting.csproj", "{E4F00FD1-5B1B-4C06-AE86-5E8DD490BE11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APICatalogo.CrossCutting", "APICatalogo.CrossCutting\APICatalogo.CrossCutting.csproj", "{E4F00FD1-5B1B-4C06-AE86-5E8DD490BE11}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APICatalogo.Tests", "APICatalogo.Tests\APICatalogo.Tests.csproj", "{C1DED9E8-5353-4CF5-946F-E18AE026A2B8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +52,10 @@ Global
 		{E4F00FD1-5B1B-4C06-AE86-5E8DD490BE11}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4F00FD1-5B1B-4C06-AE86-5E8DD490BE11}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4F00FD1-5B1B-4C06-AE86-5E8DD490BE11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1DED9E8-5353-4CF5-946F-E18AE026A2B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1DED9E8-5353-4CF5-946F-E18AE026A2B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1DED9E8-5353-4CF5-946F-E18AE026A2B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1DED9E8-5353-4CF5-946F-E18AE026A2B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

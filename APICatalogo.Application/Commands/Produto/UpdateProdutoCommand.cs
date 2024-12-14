@@ -22,7 +22,7 @@ namespace APICatalogo.Application.Commands.Produto
 
             public async Task<ProdutoDTO?> Handle(UpdateProdutoCommand request, CancellationToken cancellationToken)
             {
-                var produtoToBeUpdated = _unitOfWork.ProdutoRepository.GetById((Guid)request.Id);
+                var produtoToBeUpdated = _unitOfWork.ProdutoRepository.GetById((Guid)request.Id!);
                 if (produtoToBeUpdated == null) return null;
 
                 produtoToBeUpdated.Nome = request.Nome;
